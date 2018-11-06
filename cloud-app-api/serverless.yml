@@ -95,3 +95,24 @@ functions:
           method: delete
           cors: true
           authorizer: aws_iam
+
+  list-users:
+    # Defines an HTTP API endpoint that calls the main function in list.js
+    # - path: url path is /notes
+    # - method: GET request
+    handler: list-users.main
+    events:
+      - http:
+          path: user
+          method: get
+          cors: true
+          authorizer: aws_iam
+
+  create-user:
+    handler: create-user.main
+    events:
+      - http:
+          path: user
+          method: post
+          cors: true
+          authorizer: aws_iam

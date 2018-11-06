@@ -3,7 +3,7 @@ import { success, failure } from "./libs/response-lib";
 
 export async function main(event, context, callback) {
   const params = {
-    TableName: "cloud_app",
+    TableName: "cloud_app_user",
     // 'KeyConditionExpression' defines the condition for the query
     // - 'userId = :userId': only return items with matching 'userId'
     //   partition key
@@ -12,7 +12,7 @@ export async function main(event, context, callback) {
     //   of the authenticated user
     //KeyConditionExpression: "userID = :userID",
     //ExpressionAttributeValues: {
-    //  ":userID": event.requestContext.identity.cognitoIdentityId
+     // ":userID": event.requestContext.identity.cognitoIdentityId
     //}
   };
 
