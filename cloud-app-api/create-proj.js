@@ -13,6 +13,7 @@ export async function main(event, context, callback) {
       title: data.title,
       sta: data.sta,
       manager: data.manager,
+      developers: data.developers,
       createdAt: Date.now()
     }
   };

@@ -3,8 +3,24 @@
     text-align: center;
   }
 
+.Home .tab {
+    padding: 00px 50px 50px 50px;
+}
+
+.Home .tab h4 {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 600;
+  overflow: hidden;
+  line-height: 1.5;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.Home .tab p {
+  color: #666;
+}
+/* 
 .Home .projs {
-    padding: 00px 50% 50px 50px;
+    padding: 00px 50px 50px 50px;
 }
 
 .Home .projs h4 {
@@ -20,7 +36,7 @@
 }
 
 .Home .users {
-  padding: 00px 50px 50px 50%;
+  padding: 00px 50px 50px 50px;
 }
 
 .Home .users h4 {
@@ -33,7 +49,7 @@ text-overflow: ellipsis;
 }
 .Home .users p {
 color: #666;
-}
+} */
 
   /* .Home .lander h1 {
     font-family: "Open Sans", sans-serif;

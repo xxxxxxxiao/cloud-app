@@ -1,0 +1,13 @@
+.ProjAdmin form {
+    padding-bottom: 15px;
+}
+
+.ProjAdmin form textarea {
+    height: 50px;
+    font-size: 30px;
+}
+
+.ProjAdmin form textarea {
+    height: 300px;
+    font-size: 24px;
+}

@@ -11,8 +11,23 @@ class App extends Component {
     super(props);
   
     this.state = {
-      isAuthenticated: false
+      isAuthenticated: false,
+      isAuthenticating: true
     };
+  }
+
+  async componentDidMount() {
+    try {
+      await Auth.currentSession();
+      this.userHasAuthenticated(true);
+    }
+    catch(e) {
+      if (e !== 'No current user') {
+        alert(e);
+      }
+    }
+  
+    this.setState({ isAuthenticating: false });
   }
   
   userHasAuthenticated = authenticated => {
@@ -31,6 +46,7 @@ class App extends Component {
       userHasAuthenticated: this.userHasAuthenticated
     };
     return (
+      !this.state.isAuthenticating &&
       <div className="App">
         <Navbar fluid collapseOnSelect>
           <Navbar.Header>

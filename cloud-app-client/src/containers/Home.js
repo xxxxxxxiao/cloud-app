@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import {Button} from "react-bootstrap"
-import { PageHeader, ListGroup, ListGroupItem } from "react-bootstrap";
+import { PageHeader, ListGroup, ListGroupItem, Tabs, Tab } from "react-bootstrap";
 import "./Home.css";
 import { LinkContainer } from "react-router-bootstrap";
 import { API } from "aws-amplify";
@@ -47,7 +47,9 @@ export default class Home extends Component {
               to={`/proj/${proj.noteID}`}
             >
               <ListGroupItem header={proj.title}>
-                {"Project Manager: " + proj.manager}
+                {"Project Manager: " + proj.manager}<br />
+                {"Developers: " + proj.developers}<br />
+                {"Status: " + proj.sta}
               </ListGroupItem>
             </LinkContainer>
           : <LinkContainer
@@ -63,28 +65,23 @@ export default class Home extends Component {
     );
   }
 
+  
   renderUsersList(users) {
     return [{}].concat(users).map(
-      (user, i) =>
-      i !== 0
-          ?<LinkContainer
-          key={user.userID}
-          to={`/user/${user.userID}`}
-          >
-          <ListGroupItem header={user.name}>
-            {"Role: " + user.role}
-          </ListGroupItem>
-          </LinkContainer>
-          : <LinkContainer
-          key="new"
-          to="/user/new"
-        >
-          <ListGroupItem>
-            <h4>
-              <b>{"\uFF0B"}</b> Create a new User
-            </h4>
-          </ListGroupItem>
-        </LinkContainer>
+      function(user, i){
+        if (i !== 0){
+          return(
+            <LinkContainer
+              key={user.userID}
+              to={`/user/${user.userID}`}
+            >
+            <ListGroupItem header={user.name}>
+              {"Role: " + user.role}
+            </ListGroupItem>
+            </LinkContainer>)
+          
+        }
+      }    
     );
   }
 
@@ -96,7 +93,6 @@ export default class Home extends Component {
         <Button
             bsSize="large"
             bsStyle="success"
-            //disabled={!this.validateForm()}
             type="submit"
             block
           >
@@ -107,7 +103,6 @@ export default class Home extends Component {
         <Button
             bsSize="large"
             bsStyle="success"
-            //disabled={!this.validateForm()}
             type="submit"
             block
           >
@@ -140,11 +135,24 @@ export default class Home extends Component {
     )
   }
 
+  renderTabs() {
+    return (
+      <Tabs defaultActiveKey={1} id="tab" >
+        <Tab eventKey={1} title="Projects">
+          {this.renderProjs()}
+        </Tab>
+        <Tab eventKey={2} title="Users">
+          {this.renderUsers()}
+        </Tab>
+      </Tabs>
+    );
+  }
+
 
   render() {
     return (
       <div className="Home">
-        {this.props.isAuthenticated ?  (this.renderProjs(), this.renderUsers()) : this.renderLander()}
+        {this.props.isAuthenticated ? this.renderTabs() : this.renderLander()}
       </div>
     );
   }
