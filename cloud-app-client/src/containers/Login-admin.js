@@ -9,7 +9,7 @@ export default class LoginAdmin extends Component {
 
     this.state = {
       email: "",
-      password: ""
+      password: "",
     };
   }
 
@@ -29,7 +29,15 @@ export default class LoginAdmin extends Component {
     try {
       await Auth.signIn(this.state.email, this.state.password);
       this.props.userHasAuthenticated(true);
-      this.props.history.push("/");
+      let tempUser = await Auth.currentAuthenticatedUser();
+      //console.log(tempUser.attributes);
+      if (tempUser.attributes['custom:role'] === 'admin')    
+      {
+        this.props.history.push("/admin");
+      }
+      else{
+        alert("Sorry, you can not access as Admin.")
+      }
     } catch (e) {
       alert(e.message);
     }

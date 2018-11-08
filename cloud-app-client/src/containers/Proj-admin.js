@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { FormGroup, FormControl, Button, ControlLabel, DropdownButton, MenuItem, ToggleButtonGroup, ToggleButton, ButtonToolbar } from "react-bootstrap";
 import { API } from "aws-amplify";
 import "./Proj-admin.css"
-import { ConsoleLogger } from "@aws-amplify/core";
 
 export default class ProjAdmin extends Component {
   constructor(props) {
@@ -15,7 +14,7 @@ export default class ProjAdmin extends Component {
         title: "",
         content: "",
         manager: "",
-        sta: "pending",
+        sta: "",
         developers: [],
         users: [],
         dropDownTitle: ""
@@ -47,6 +46,7 @@ export default class ProjAdmin extends Component {
   }
 
   getProj() {
+    //console.log(this.props.match.params.id)
     return API.get("proj", `/proj/${this.props.match.params.id}`);
   }
 
@@ -64,7 +64,6 @@ export default class ProjAdmin extends Component {
 
   handleSubmit = async event => {  
     event.preventDefault();
-    //console.log(this.state.developers)
   
     try {
   
@@ -75,14 +74,13 @@ export default class ProjAdmin extends Component {
         sta: this.state.sta,
         developers: this.state.developers
       });
-      this.props.history.push("/");
+      this.props.history.push("/admin");
     } catch (e) {
       alert(e);
     }
   }
 
   saveProj(proj) {
-    console.log(proj)
     return API.put("proj", `/proj/${this.props.match.params.id}`, {
       body: proj
     });
@@ -105,7 +103,7 @@ export default class ProjAdmin extends Component {
     
     try {
       await this.deleteProj();
-      this.props.history.push("/");
+      this.props.history.push("/admin");
     } catch (e) {
       alert(e);
     }
@@ -143,7 +141,6 @@ export default class ProjAdmin extends Component {
 
   handleDevSelect = event => {
     this.setState({ developers: event});
-    //console.log(event)
   }
 
   handleStatusSelect = event => {

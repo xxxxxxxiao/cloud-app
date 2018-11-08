@@ -7,7 +7,7 @@ export async function main(event, context, callback) {
   const params = {
     TableName: "cloud_app",
     Item: {
-      userID: event.requestContext.identity.cognitoIdentityId,
+      //userID: event.requestContext.identity.cognitoIdentityId,
       noteID: uuid.v1(),
       content: data.content,
       title: data.title,

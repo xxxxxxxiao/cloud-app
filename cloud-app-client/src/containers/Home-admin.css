@@ -1,0 +1,19 @@
+.HomeAdmin {
+    padding: 50px 50px;
+  }
+
+.HomeAdmin .tab {
+    padding: 00px 50px 50px 50px;
+}
+
+.HomeAdmin .tab h4 {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 600;
+  overflow: hidden;
+  line-height: 1.5;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.HomeAdmin .tab p {
+  color: #666;
+}

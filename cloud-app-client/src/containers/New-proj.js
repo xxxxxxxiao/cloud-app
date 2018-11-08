@@ -75,7 +75,7 @@ export default class NewProj extends Component {
   }
 
   handleDevSelect = event => {
-    this.setState({ developers: event})
+    this.setState({ developers: event});
   }
 
 
@@ -92,7 +92,7 @@ export default class NewProj extends Component {
         developers: this.state.developers
         
       });
-      this.props.history.push("/");
+      this.props.history.push("/admin");
     } catch (e) {
       alert(e);
     }
