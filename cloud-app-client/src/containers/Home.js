@@ -22,6 +22,7 @@ export default class Home extends Component {
         </Button>
         </LinkContainer>
 
+        <LinkContainer to="/empllogin">
         <Button
             bsSize="large"
             bsStyle="success"
@@ -30,6 +31,7 @@ export default class Home extends Component {
           >
             Login As Employee
         </Button>
+        </LinkContainer>
       </div>
     );
   }

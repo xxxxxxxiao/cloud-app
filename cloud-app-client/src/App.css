@@ -5,6 +5,16 @@
 }
 
 .App .navbar-brand {
-  font-size: 30px;
-  font-weight: bold;
+  margin-top: 25px;
+  margin-left: 30px;
+  font-size: 45px;
+  height: 80px;
+  font-variant-position: normal;
+}
+
+.App .navbar-collapse {
+  margin-right: 30px;
+  margin-top: 28px;
+  font-size: 25px;
+
 }
