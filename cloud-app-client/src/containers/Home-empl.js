@@ -3,7 +3,6 @@ import { PageHeader, ListGroup, ListGroupItem, Tabs, Tab } from "react-bootstrap
 import "./Home-empl.css";
 import { LinkContainer } from "react-router-bootstrap";
 import { API, Auth } from "aws-amplify";
-import { ConsoleLogger } from "@aws-amplify/core";
 
 export default class HomeEmpl extends Component {
   constructor(props) {
@@ -12,7 +11,8 @@ export default class HomeEmpl extends Component {
     this.state = {
       projs: [],
       users: [],
-      name: ""
+      name: "",
+      _isMounted: false
     };
   }
 
@@ -20,17 +20,25 @@ export default class HomeEmpl extends Component {
     if (!this.props.isAuthenticated) {
       return;
     }
-  
+    
+    this._isMounted = true
     try {
       const projs = await this.projs();
       const users = await this.users();
       let currentUser = await Auth.currentAuthenticatedUser();//.attributes['name'];
       const name = currentUser.attributes['name'];
-      this.setState({ projs, users, name });
+      
+      if (this._isMounted){
+        this.setState({ projs, users, name });
+      }
     } catch (e) {
       alert(e);
     }
   
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false
   }
   
   projs() {
@@ -73,7 +81,7 @@ export default class HomeEmpl extends Component {
             return(
               <LinkContainer
                 key={proj.noteID}
-                to={`/empl/${proj.noteID}`}
+                to={`/manager/${proj.noteID}`}
               >
                 <ListGroupItem header={proj.title} >
                   {"Project Manager: " + proj.manager}<br />
@@ -92,7 +100,8 @@ export default class HomeEmpl extends Component {
     let username = this.state.name;
     return [{}].concat(projs).map(
       function(proj, i){
-        if (proj.developers && proj.developers.indexOf(username) !== -1 && proj.manager !== username) {
+        if (proj.developers && proj.developers.indexOf(username) !== -1 
+            && proj.manager && proj.manager!== username) {
               return(
                 <LinkContainer
                 key={proj.noteID}
@@ -177,7 +186,7 @@ export default class HomeEmpl extends Component {
         </ListGroup>
       </div>
       <div className="involvedprojs">
-        <PageHeader>Involved Projects</PageHeader>
+        <PageHeader>Involved projects</PageHeader>
         <ListGroup>
           {this.renderInvolvedProjsList(this.state.projs)}
         </ListGroup>

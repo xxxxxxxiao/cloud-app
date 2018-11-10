@@ -27,6 +27,7 @@ export default class LoginAdmin extends Component {
     event.preventDefault();
   
     try {
+      this.props.userIsAdmin(true);
       await Auth.signIn(this.state.email, this.state.password);
       this.props.userHasAuthenticated(true);
       let tempUser = await Auth.currentAuthenticatedUser();

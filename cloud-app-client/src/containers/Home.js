@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import {Button} from "react-bootstrap"
-import { PageHeader, ListGroup, ListGroupItem, Tabs, Tab } from "react-bootstrap";
 import "./Home.css";
 import { LinkContainer } from "react-router-bootstrap";
-import { API } from "aws-amplify";
 
 export default class Home extends Component {
 

@@ -1,0 +1,14 @@
+.ProjManager form {
+  padding-bottom: 15px;
+  font-size: 20px;
+}
+
+.ProjManager form textarea {
+  height: 50px;
+  font-size: 30px;
+}
+
+.ProjManager form textarea {
+  height: 300px;
+  font-size: 24px;
+}
