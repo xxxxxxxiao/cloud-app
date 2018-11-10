@@ -10,6 +10,8 @@ import LoginEmpl from "./containers/Login-empl"
 import HomeEmpl from "./containers/Home-empl"
 import ProjManager from "./containers/Proj-manager"
 import ProjDeveloper from "./containers/Proj-dev"
+import Setting from "./containers/Setting"
+import Password from "./containers/Password"
 
 import AppliedRoute from "./components/AppliedRoute";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
@@ -29,5 +31,8 @@ export default ({ childProps }) =>
     <AuthenticatedRoute path="/empl" exact component={HomeEmpl} props={childProps} />
     <AuthenticatedRoute path="/manager/:id" exact component={ProjManager} props={childProps} />
     <AuthenticatedRoute path="/empl/:id" exact component={ProjDeveloper} props={childProps} />
+    <AuthenticatedRoute path="/empl/setting/:id" exact component={Setting} props={childProps} />
+    <AuthenticatedRoute path="/empl/setting/:id/password" exact component={Password} props={childProps} />
+
 
   </Switch>;

@@ -1,0 +1,9 @@
+.Setting form {
+  padding-bottom: 15px;
+  font-size: 20px;
+}
+
+.Setting form textarea {
+  height: 150px;
+  font-size: 30px;
+}

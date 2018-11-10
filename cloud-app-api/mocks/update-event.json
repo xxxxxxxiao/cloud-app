@@ -1,11 +1,6 @@
 {
-    "body": "{\"content\":\"hello world\",\"title\":\"i am title\",\"sta\":\"incompleted\",\"manager\":\"BBBB\"}",
-    "pathParameters": {
-      "id": "ffaf7060-daba-11e8-893f-c74aa53e01ae"
-    },
-    "requestContext": {
-      "identity": {
-        "cognitoIdentityId": "USER-SUB-1234"
-      }
-    }
+  "body": "{\"userName\":\"ME2\",\"skills\":\"33333, C++, CNM\"}",
+  "pathParameters": {
+    "id": "efced8d0-e513-11e8-8112-eda52bca0c3c"
   }
+}

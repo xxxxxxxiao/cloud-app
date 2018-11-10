@@ -116,3 +116,27 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
+
+  get-user:
+  # Defines an HTTP API endpoint that calls the main function in get.js
+  # - path: url path is /notes/{id}
+  # - method: GET request
+    handler: get-user.main
+    events:
+      - http:
+          path: user/{id}
+          method: get
+          cors: true
+          authorizer: aws_iam
+
+  update-user:
+  # Defines an HTTP API endpoint that calls the main function in update.js
+  # - path: url path is /notes/{id}
+  # - method: PUT request
+    handler: update-user.main
+    events:
+      - http:
+          path: user/{id}
+          method: put
+          cors: true
+          authorizer: aws_iam

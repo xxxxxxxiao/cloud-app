@@ -12,6 +12,7 @@ export default class HomeEmpl extends Component {
       projs: [],
       users: [],
       name: "",
+      userID: "",
       _isMounted: false
     };
   }
@@ -23,13 +24,14 @@ export default class HomeEmpl extends Component {
     
     this._isMounted = true
     try {
-      const projs = await this.projs();
-      const users = await this.users();
+      const projs = await this.getProjs();
+      const users = await this.getUsers();
       let currentUser = await Auth.currentAuthenticatedUser();//.attributes['name'];
       const name = currentUser.attributes['name'];
-      
+      const userID = this.getUserID(name, users);
+      //console.log(userID);
       if (this._isMounted){
-        this.setState({ projs, users, name });
+        this.setState({ projs, users, name, userID });
       }
     } catch (e) {
       alert(e);
@@ -40,12 +42,16 @@ export default class HomeEmpl extends Component {
   componentWillUnmount() {
     this._isMounted = false
   }
+
+  getUserID(name, users) {
+    return users.find(user => user.userName === name).userID
+  }
   
-  projs() {
+  getProjs() {
     return API.get("proj", "/proj");
   }
 
-  users(){
+  getUsers(){
     return API.get("user", "/user")
   }
 
@@ -124,7 +130,7 @@ export default class HomeEmpl extends Component {
     return [{}].concat(projs).map(
       function(proj, i){
         if (i !== 0){
-          if (proj.manager !== username){
+          if (proj.manager !== username && proj.developers && proj.developers.indexOf(username) === -1){
             return(
               <ListGroupItem header={proj.title} key={proj.noteID}>
                 {"Project Manager: " + proj.manager}<br />
@@ -145,27 +151,13 @@ export default class HomeEmpl extends Component {
     return [{}].concat(users).map(
       function(user, i){
           if (i !== 0){
-            if (user.name !== username){
+            if (user.userName !== username){
                 return(
-                    <ListGroupItem header={user.name} key={user.userID}>
+                    <ListGroupItem header={user.userName} key={user.userID}>
                         {"Skills: " + user.skills}
                     </ListGroupItem>
                 )
             }
-          }
-          else{
-            return(
-                <LinkContainer
-                    key={"setting"}
-                    to={"/empl/setting"}
-                >
-                <ListGroupItem active>
-                    <h4>
-                    <b></b> Setting your account
-                    </h4>
-                </ListGroupItem>
-                </LinkContainer>
-            )
           }
       }
     
@@ -204,12 +196,27 @@ export default class HomeEmpl extends Component {
 
   renderUsers(){
     return (
-      <div className="users">
-        <PageHeader>All Users</PageHeader>
-        <ListGroup>
-          {this.renderUsersList(this.state.users)}
-        </ListGroup>
+      <React.Fragment>
+      <div className="user">
+        <PageHeader>You</PageHeader>
+          <LinkContainer
+              key={"setting"}
+              to={`/empl/setting/${this.state.userID}`}
+          >
+            <ListGroupItem active>
+                <h4>
+                <b></b> Setting your account
+                </h4>
+            </ListGroupItem>
+          </LinkContainer>
       </div>
+      <div className='otherusers'>
+        <PageHeader>Other Employees</PageHeader>
+          <ListGroup>
+            {this.renderUsersList(this.state.users)}
+          </ListGroup>
+      </div>
+      </React.Fragment>
     )
   }
 

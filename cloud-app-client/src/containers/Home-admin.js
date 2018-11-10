@@ -10,7 +10,8 @@ export default class HomeAdmin extends Component {
 
     this.state = {
       projs: [],
-      users: []
+      users: [],
+      _isMounted: false
     };
   }
 
@@ -19,14 +20,21 @@ export default class HomeAdmin extends Component {
       return;
     }
   
+    this._isMounted = true
     try {
       const projs = await this.projs();
       const users = await this.users();
-      this.setState({ projs, users });
+      if (this._isMounted){
+        this.setState({ projs, users });
+      }
     } catch (e) {
       alert(e);
     }
   
+  }
+  
+  componentWillUnmount() {
+    this._isMounted = false
   }
   
   projs() {
@@ -69,14 +77,10 @@ export default class HomeAdmin extends Component {
     return [{}].concat(users).map(
       (user, i) =>
         i !== 0
-         ?  <LinkContainer
-              key={user.userID}
-              to={`/admin/${user.userID}`}
-            >
-            <ListGroupItem header={user.name}>
+         ?  <ListGroupItem header={user.userName} key={user.userID}>
               {"Skills: " + user.skills}
             </ListGroupItem>
-            </LinkContainer>
+            
           : <LinkContainer
               key="newuser"
               to="/newuser"

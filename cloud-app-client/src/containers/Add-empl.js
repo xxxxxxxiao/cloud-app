@@ -46,7 +46,8 @@ export default class AddEmpl extends Component {
         }
       });
       await this.createUser({
-          name: this.state.name,
+          userName: this.state.name,
+          //skills: "None"
       })
       this.setState({
         newUser

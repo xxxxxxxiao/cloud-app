@@ -8,7 +8,7 @@ export async function main(event, context, callback) {
     TableName: "cloud_app_user",
     Item: {
       userID: uuid.v1(),
-      name: data.name,
+      userName: data.userName,
       skills: data.skills
     }
   };

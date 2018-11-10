@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Redirect } from "react-router-dom";
 
 export default function({ component: C, props: cProps, ...rest }) {
-  console.log(cProps.isAdmin)
+  //console.log(cProps.isAdmin)
   return(
   <Route
     {...rest}

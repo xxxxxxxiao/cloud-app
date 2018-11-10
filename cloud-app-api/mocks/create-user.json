@@ -1,5 +1,5 @@
 {
-    "body": "{\"name\":\"ME2\",\"skills\":\"Python, C++, CNM\"}",
+    "body": "{\"userName\":\"ME2\",\"skills\":\"Python, C++, CNM\"}",
     "requestContext": {
       "identity": {
         "cognitoIdentityId": "USER-SUB-12345"

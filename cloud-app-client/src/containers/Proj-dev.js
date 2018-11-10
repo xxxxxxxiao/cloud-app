@@ -69,7 +69,7 @@ export default class ProjDeveloper extends Component {
             <br /><br />
 
             <ControlLabel>Project Details</ControlLabel>
-              <p><Well bsSize="small">&nbsp; {this.state.content}</Well></p>
+              <Well bsSize="small">&nbsp; {this.state.content}</Well>
   
       </div>
     );

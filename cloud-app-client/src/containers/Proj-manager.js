@@ -117,7 +117,7 @@ export default class ProjManager extends Component {
     return [{}].concat(users).map(
       function(user, i){
         if (i !== 0){
-          return(<ToggleButton value={user.name} key={i}>{user.name}</ToggleButton>)
+          return(<ToggleButton value={user.userName} key={i}>{user.userName}</ToggleButton>)
           //return(<Button key={i}>{user.name}</Button>)
         }
       }    
