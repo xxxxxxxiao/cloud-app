@@ -58,28 +58,6 @@ export default class HomeEmpl extends Component {
   renderManagedProjsList(projs) {
     let username = this.state.name;
     return [{}].concat(projs).map(
-    //   (proj, i) =>
-    //     i !== 0
-    //       ? <LinkContainer
-    //           key={proj.noteID}
-    //           to={`/admin/${proj.noteID}`}
-    //         >
-    //           <ListGroupItem header={proj.title}>
-    //             {"Project Manager: " + proj.manager}<br />
-    //             {"Developers: " + proj.developers}<br />
-    //             {"Status: " + proj.sta}
-    //           </ListGroupItem>
-    //         </LinkContainer>
-    //       : <LinkContainer
-    //           key="new"
-    //           to="/admin/new"
-    //         >
-    //           <ListGroupItem>
-    //             <h4>
-    //               <b>{"\uFF0B"}</b> Create a new project
-    //             </h4>
-    //           </ListGroupItem>
-    //         </LinkContainer>
 
       function(proj, i){
         if (i !== 0){
@@ -176,13 +154,13 @@ export default class HomeEmpl extends Component {
         <ListGroup>
           {this.renderManagedProjsList(this.state.projs)}
         </ListGroup>
-      </div>
+      </div><br />
       <div className="involvedprojs">
         <PageHeader>Involved projects</PageHeader>
         <ListGroup>
           {this.renderInvolvedProjsList(this.state.projs)}
         </ListGroup>
-      </div>
+      </div><br />
       <div className="projs">
         <PageHeader>Other projects</PageHeader>
         <ListGroup>
@@ -205,7 +183,7 @@ export default class HomeEmpl extends Component {
           >
             <ListGroupItem active>
                 <h4>
-                <b></b> Setting your account
+                <b></b> Settings
                 </h4>
             </ListGroupItem>
           </LinkContainer>

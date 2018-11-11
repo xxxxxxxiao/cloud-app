@@ -72,6 +72,68 @@ export default class HomeAdmin extends Component {
     );
   }
 
+  renderCompProjsList(projs) {
+    return [{}].concat(projs).map(
+      function(proj, i) {
+        if (proj.sta === "Completed") {
+          return(
+            <LinkContainer
+              key={proj.noteID}
+              to={`/admin/${proj.noteID}`}
+            >
+              <ListGroupItem header={proj.title}>
+                {"Project Manager: " + proj.manager}<br />
+                {"Developers: " + proj.developers}<br />
+                {"Status: " + proj.sta}
+              </ListGroupItem>
+            </LinkContainer>
+          )
+        }
+      }
+    )
+  }
+
+  renderActiveProjsList(projs) {
+    return [{}].concat(projs).map(
+      function(proj, i) {
+        if (proj.sta === "Pending") {
+          return(
+            <LinkContainer
+              key={proj.noteID}
+              to={`/admin/${proj.noteID}`}
+            >
+              <ListGroupItem header={proj.title}>
+                {"Project Manager: " + proj.manager}<br />
+                {"Developers: " + proj.developers}<br />
+                {"Status: " + proj.sta}
+              </ListGroupItem>
+            </LinkContainer>
+          )
+        }
+      }
+    )
+  }
+
+  renderPendingProjsList(projs) {
+    return [{}].concat(projs).map(
+      function(proj, i) {
+        if (proj.sta === "Active") {
+          return(
+            <LinkContainer
+              key={proj.noteID}
+              to={`/admin/${proj.noteID}`}
+            >
+              <ListGroupItem header={proj.title}>
+                {"Project Manager: " + proj.manager}<br />
+                {"Developers: " + proj.developers}<br />
+                {"Status: " + proj.sta}
+              </ListGroupItem>
+            </LinkContainer>
+          )
+        }
+      }
+    )
+  }
   
   renderUsersList(users) {
     return [{}].concat(users).map(
@@ -100,9 +162,32 @@ export default class HomeAdmin extends Component {
     return (
       <div className="projs">
         <PageHeader>All Projects</PageHeader>
-        <ListGroup>
+        <Tabs defaultActiveKey={1} id="projtab" >
+          <Tab eventKey={1} title="All Projects">
+            <ListGroup>
+              {this.renderProjsList(this.state.projs)}
+            </ListGroup>
+          </Tab>
+          <Tab eventKey={2} title="Completed Projects">
+            <ListGroup>
+              {this.renderCompProjsList(this.state.projs)}
+            </ListGroup>
+          </Tab>
+          <Tab eventKey={3} title="Active Projects">
+            <ListGroup>
+              {this.renderActiveProjsList(this.state.projs)}
+            </ListGroup>
+          </Tab>
+          <Tab eventKey={4} title="Pending Projects">
+            <ListGroup>
+              {this.renderPendingProjsList(this.state.projs)}
+            </ListGroup>
+          </Tab>
+        </Tabs>
+
+        {/* <ListGroup>
           {this.renderProjsList(this.state.projs)}
-        </ListGroup>
+        </ListGroup> */}
       </div>
     );
   }

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FormGroup, FormControl, Button, ControlLabel, MenuItem, ToggleButtonGroup, ToggleButton, ButtonToolbar } from "react-bootstrap";
+import { FormGroup, FormControl, Button, ControlLabel, ToggleButtonGroup, ToggleButton, ButtonToolbar } from "react-bootstrap";
 import { API, Auth } from "aws-amplify";
 import "./Proj-manager.css"
 
@@ -94,24 +94,6 @@ export default class ProjManager extends Component {
     return API.del("proj", `/proj/${this.props.match.params.id}`);
   }
   
-  handleDelete = async event => {
-    event.preventDefault();
-  
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this note?"
-    );
-  
-    if (!confirmed) {
-      return;
-    }
-    
-    try {
-      await this.deleteProj();
-      this.props.history.push("/emply");
-    } catch (e) {
-      alert(e);
-    }
-  }
 
   generateDevList(users) {
     return [{}].concat(users).map(
@@ -190,14 +172,6 @@ export default class ProjManager extends Component {
               type="submit"
             >
             Save
-            </Button>
-            <Button
-              block
-              bsStyle="danger"
-              bsSize="large"
-              onClick={this.handleDelete}
-            >
-            Delete
             </Button>
           </form>
         }

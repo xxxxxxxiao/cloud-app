@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { LinkContainer } from "react-router-bootstrap";
-import { FormGroup, FormControl, Button, PageHeader, ToggleButtonGroup, ToggleButton, ButtonToolbar } from "react-bootstrap";
+import { FormGroup, FormControl, Button, PageHeader } from "react-bootstrap";
 import { API, Auth } from "aws-amplify";
 import "./Setting.css"
 

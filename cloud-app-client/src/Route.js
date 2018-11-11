@@ -13,7 +13,7 @@ import ProjDeveloper from "./containers/Proj-dev"
 import Setting from "./containers/Setting"
 import Password from "./containers/Password"
 
-import AppliedRoute from "./components/AppliedRoute";
+//import AppliedRoute from "./components/AppliedRoute";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
 
