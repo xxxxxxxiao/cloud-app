@@ -1,3 +1,5 @@
+// The homepage of employee version
+
 import React, { Component } from "react";
 import { PageHeader, ListGroup, ListGroupItem, Tabs, Tab } from "react-bootstrap";
 import "./Home-empl.css";
@@ -26,39 +28,42 @@ export default class HomeEmpl extends Component {
     try {
       const projs = await this.getProjs();
       const users = await this.getUsers();
-      let currentUser = await Auth.currentAuthenticatedUser();//.attributes['name'];
+      // Get the name of the employee login now
+      let currentUser = await Auth.currentAuthenticatedUser();
       const name = currentUser.attributes['name'];
       const userID = this.getUserID(name, users);
-      //console.log(userID);
+      // Help to check memory leak
       if (this._isMounted){
         this.setState({ projs, users, name, userID });
       }
     } catch (e) {
       alert(e);
     }
-  
   }
-
+  // Help to check memory leak
   componentWillUnmount() {
     this._isMounted = false
   }
 
+  // Find the patition key of the user in DynamoDb
   getUserID(name, users) {
     return users.find(user => user.userName === name).userID
   }
   
+  // Get all projects
   getProjs() {
     return API.get("proj", "/proj");
   }
 
+  // Get all users
   getUsers(){
     return API.get("user", "/user")
   }
 
+  // Render the list of projects managed by the employee
   renderManagedProjsList(projs) {
     let username = this.state.name;
     return [{}].concat(projs).map(
-
       function(proj, i){
         if (i !== 0){
           if (proj.manager === username){
@@ -80,6 +85,7 @@ export default class HomeEmpl extends Component {
     );
   }
 
+  // Render the list of projects that he employee involved
   renderInvolvedProjsList(projs) {
     let username = this.state.name;
     return [{}].concat(projs).map(
@@ -103,6 +109,7 @@ export default class HomeEmpl extends Component {
     );
   }
 
+  // Render the list of other projects
   renderOtherProjsList(projs) {
     let username = this.state.name;
     return [{}].concat(projs).map(
@@ -122,8 +129,7 @@ export default class HomeEmpl extends Component {
     );
   }
 
-
-  
+  // Render the list of showing all users
   renderUsersList(users) {
     let username = this.state.name;
     return [{}].concat(users).map(
@@ -138,14 +144,10 @@ export default class HomeEmpl extends Component {
             }
           }
       }
-    
-    
-    
     );
   }
 
-
-
+  // Render the project page
   renderProjs() {
     return (
       <React.Fragment>
@@ -168,10 +170,10 @@ export default class HomeEmpl extends Component {
         </ListGroup>
       </div>
       </React.Fragment>
-
     );
   }
 
+  // Render the user page
   renderUsers(){
     return (
       <React.Fragment>
@@ -198,6 +200,7 @@ export default class HomeEmpl extends Component {
     )
   }
 
+  // Render tabs to allow switching between project page and user page
   renderTabs() {
     return (
       <Tabs defaultActiveKey={1} id="tab" >
@@ -210,7 +213,6 @@ export default class HomeEmpl extends Component {
       </Tabs>
     );
   }
-
 
   render() {
     return (

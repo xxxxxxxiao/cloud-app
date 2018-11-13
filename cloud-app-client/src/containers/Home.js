@@ -1,3 +1,5 @@
+// The homepage, users can select login as admin or employee
+
 import React, { Component } from "react";
 import {Button} from "react-bootstrap"
 import "./Home.css";
@@ -19,7 +21,7 @@ export default class Home extends Component {
             Login As Admin
         </Button>
         </LinkContainer>
-
+        <br /><br />
         <LinkContainer to="/empllogin">
         <Button
             bsSize="large"

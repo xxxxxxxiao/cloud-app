@@ -1,3 +1,5 @@
+// Generate navigation bar
+
 import React, { Component, Fragment } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { Navbar, Nav, NavItem } from "react-bootstrap";
@@ -10,13 +12,17 @@ class App extends Component {
   constructor(props) {
     super(props);
   
+    // Define some globle variances
     this.state = {
+      // Variance used for check authenticated status
       isAuthenticated: false,
       isAuthenticating: true,
+      // Variance used for checking if the user is admin (used in UnahenticatedRoute)
       isAdmin: false
     };
   }
 
+  // Check if the user is authenticated
   async componentDidMount() {
     try {
       await Auth.currentSession();
@@ -31,14 +37,17 @@ class App extends Component {
     this.setState({ isAuthenticating: false });
   }
   
+  // Check if the user is authenticated
   userHasAuthenticated = authenticated => {
     this.setState({ isAuthenticated: authenticated });
   }
 
+  // Check if the user is admin
   userIsAdmin = admin => {
     this.setState({ isAdmin: admin});
   }
 
+  // Handle logout event
   handleLogout = async event => {
     await Auth.signOut();
     this.userHasAuthenticated(false);
@@ -46,6 +55,7 @@ class App extends Component {
     this.props.history.push("/");
   }
 
+  // Render the page
   render() {
     const childProps = {
       isAuthenticated: this.state.isAuthenticated,

@@ -1,3 +1,5 @@
+// The page for creating new project
+
 import React, { Component } from "react";
 import { FormGroup, FormControl, Button, ControlLabel, DropdownButton, MenuItem, ToggleButtonGroup, ToggleButton } from "react-bootstrap";
 import "./New-proj.css"
@@ -22,6 +24,7 @@ export default class NewProj extends Component {
       return;
     }
   
+    // Get all employees
     try {
       const users = await this.users();
       this.setState({ users });
@@ -29,57 +32,35 @@ export default class NewProj extends Component {
       alert(e);
     } 
   }
-  users(){
+
+  // Get all employees from API
+  users(){ 
     return API.get("user", "/user")
   }
 
-  generateUserList(users) {
-    //return [{}].concat(users).map((user, index) => (
-    //  <MenuItem eventKey={index}>user</MenuItem>
-    //));
-
-    return [{}].concat(users).map(
-      function(user, i){
-        if (i !== 0){
-          return(<MenuItem eventKey={user.userName} key={i}>{user.userName}</MenuItem>)
-          //return(<Button key={i}>{user.name}</Button>)
-        }
-      }    
-    );
-  }
-
-  generateDevList(users) {
-    return [{}].concat(users).map(
-      function(user, i){
-        if (i !== 0){
-          return(<ToggleButton value={user.userName} key={i}>{user.userName}</ToggleButton>)
-          //return(<Button key={i}>{user.name}</Button>)
-        }
-      }    
-    );
-  }
-
-
+  // Validate the content form, the content should not be empty
   validateForm() {
     return this.state.content.length > 0;
   }
 
+  // Handle changes in the forms
   handleChange = event => {
     this.setState({
       [event.target.id]: event.target.value
     });
   }
 
+  // Handle the event when selecting manager.
   handleSelect = event => {
     this.setState({ manager: event});
   }
 
+  // Handle the event when selecting developers
   handleDevSelect = event => {
     this.setState({ developers: event});
   }
 
-
-
+  // Handle submit event to create a new project
   handleSubmit = async event => {
     event.preventDefault();
     
@@ -97,13 +78,36 @@ export default class NewProj extends Component {
       alert(e);
     }
   }
-  
+  // Create project by calling API
   createProj(proj) {
     return API.post("proj", "/proj", {
       body: proj
     });
   }
 
+  // Render the menu to show all employees for selecting a manager
+  renderUserList(users) {
+    return [{}].concat(users).map(
+      function(user, i){
+        if (i !== 0){
+          return(<MenuItem eventKey={user.userName} key={i}>{user.userName}</MenuItem>)
+        }
+      }    
+    );
+  }
+
+  // Render the buttons to show all employees for selecting developers
+  renderDevList(users) {
+    return [{}].concat(users).map(
+      function(user, i){
+        if (i !== 0){
+          return(<ToggleButton value={user.userName} key={i}>{user.userName}</ToggleButton>)
+        }
+      }    
+    );
+  }
+
+  // Render the page
   render() {
     return (
       <div className="NewProj">
@@ -126,7 +130,7 @@ export default class NewProj extends Component {
             onSelect={this.handleSelect}
           >
             <MenuItem eventKey={"None"} key={0}>None</MenuItem>
-            {this.generateUserList(this.state.users)}
+            {this.renderUserList(this.state.users)}
           </DropdownButton>
 
           <ControlLabel>&nbsp; Project Developers</ControlLabel>
@@ -134,7 +138,7 @@ export default class NewProj extends Component {
             type="checkbox"
             onChange={this.handleDevSelect}
           >
-            {this.generateDevList(this.state.users)}
+            {this.renderDevList(this.state.users)}
           </ToggleButtonGroup>
 
           <FormGroup controlId="content">

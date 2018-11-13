@@ -1,3 +1,5 @@
+// The homepage of the admin version
+
 import React, { Component } from "react";
 import { PageHeader, ListGroup, ListGroupItem, Tabs, Tab } from "react-bootstrap";
 import "./Home-admin.css";
@@ -19,32 +21,36 @@ export default class HomeAdmin extends Component {
     if (!this.props.isAuthenticated) {
       return;
     }
-  
     this._isMounted = true
+    // Set the isAdmin to be true, this is used for the UnauthenticatedRoute.js
+    this.props.userIsAdmin(true);
     try {
-      const projs = await this.projs();
-      const users = await this.users();
+      const projs = await this.getProjs();
+      const users = await this.getUsers();
+      // Help to check memory leak
       if (this._isMounted){
         this.setState({ projs, users });
       }
     } catch (e) {
       alert(e);
     }
-  
   }
-  
+  // Help to check memory leak
   componentWillUnmount() {
     this._isMounted = false
   }
   
-  projs() {
+  // Get all projects
+  getProjs() {
     return API.get("proj", "/proj");
   }
 
-  users(){
+  // Get all users
+  getUsers(){
     return API.get("user", "/user")
   }
 
+  // Render the list of all projects
   renderProjsList(projs) {
     return [{}].concat(projs).map(
       (proj, i) =>
@@ -72,6 +78,7 @@ export default class HomeAdmin extends Component {
     );
   }
 
+  // Render the list of all completed projects
   renderCompProjsList(projs) {
     return [{}].concat(projs).map(
       function(proj, i) {
@@ -93,28 +100,8 @@ export default class HomeAdmin extends Component {
     )
   }
 
+  // Render the list of all active projects
   renderActiveProjsList(projs) {
-    return [{}].concat(projs).map(
-      function(proj, i) {
-        if (proj.sta === "Pending") {
-          return(
-            <LinkContainer
-              key={proj.noteID}
-              to={`/admin/${proj.noteID}`}
-            >
-              <ListGroupItem header={proj.title}>
-                {"Project Manager: " + proj.manager}<br />
-                {"Developers: " + proj.developers}<br />
-                {"Status: " + proj.sta}
-              </ListGroupItem>
-            </LinkContainer>
-          )
-        }
-      }
-    )
-  }
-
-  renderPendingProjsList(projs) {
     return [{}].concat(projs).map(
       function(proj, i) {
         if (proj.sta === "Active") {
@@ -134,7 +121,30 @@ export default class HomeAdmin extends Component {
       }
     )
   }
+
+  // Render the list of all pending projects
+  renderPendingProjsList(projs) {
+    return [{}].concat(projs).map(
+      function(proj, i) {
+        if (proj.sta === "Pending") {
+          return(
+            <LinkContainer
+              key={proj.noteID}
+              to={`/admin/${proj.noteID}`}
+            >
+              <ListGroupItem header={proj.title}>
+                {"Project Manager: " + proj.manager}<br />
+                {"Developers: " + proj.developers}<br />
+                {"Status: " + proj.sta}
+              </ListGroupItem>
+            </LinkContainer>
+          )
+        }
+      }
+    )
+  }
   
+  // Render the list of all users
   renderUsersList(users) {
     return [{}].concat(users).map(
       (user, i) =>
@@ -156,8 +166,7 @@ export default class HomeAdmin extends Component {
     );
   }
 
-
-
+  // Render page for displaying projects
   renderProjs() {
     return (
       <div className="projs">
@@ -184,14 +193,11 @@ export default class HomeAdmin extends Component {
             </ListGroup>
           </Tab>
         </Tabs>
-
-        {/* <ListGroup>
-          {this.renderProjsList(this.state.projs)}
-        </ListGroup> */}
       </div>
     );
   }
 
+  // Render the page for displaying users
   renderUsers(){
     return (
       <div className="users">
@@ -203,6 +209,7 @@ export default class HomeAdmin extends Component {
     )
   }
 
+  // Render tabs to switch between users and projects
   renderTabs() {
     return (
       <Tabs defaultActiveKey={1} id="tab" >
@@ -215,7 +222,6 @@ export default class HomeAdmin extends Component {
       </Tabs>
     );
   }
-
 
   render() {
     return (

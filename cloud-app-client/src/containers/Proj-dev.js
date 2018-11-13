@@ -1,3 +1,5 @@
+// The page of showing a project in developer version 
+
 import React, { Component } from "react";
 import { Well, ControlLabel, Label } from "react-bootstrap";
 import { API } from "aws-amplify";
@@ -18,6 +20,7 @@ export default class ProjDeveloper extends Component {
     };
   }
 
+  // Get informations
   async componentDidMount() {
     try {
       const proj = await this.getProj();
@@ -36,11 +39,13 @@ export default class ProjDeveloper extends Component {
     }
   }
 
+  // Call API to get this project
   getProj() {
     return API.get("proj", `/proj/${this.props.match.params.id}`);
   }
 
-  generateDevList(devs) {
+  // Render the label to show all developers 
+  renderDevList(devs) {
     return devs.map(
       function(dev, i){
         return (<Label key={i}>{dev}</Label>)
@@ -48,6 +53,7 @@ export default class ProjDeveloper extends Component {
     );
   }
 
+  // Render the page
   render() {
     return (
       <div className="ProjDeveloper">
@@ -60,7 +66,7 @@ export default class ProjDeveloper extends Component {
             <br /><br />
 
             <ControlLabel>Project Developers</ControlLabel><br />
-              {this.generateDevList(this.state.developers)}
+              {this.renderDevList(this.state.developers)}
             <br /><br />
             
 

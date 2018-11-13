@@ -1,3 +1,6 @@
+// The page of editing a project in Manager version.
+// This one is almost the same as Admin version except cannot delete a project here.
+
 import React, { Component } from "react";
 import { FormGroup, FormControl, Button, ControlLabel, ToggleButtonGroup, ToggleButton, ButtonToolbar } from "react-bootstrap";
 import { API, Auth } from "aws-amplify";
@@ -22,11 +25,15 @@ export default class ProjManager extends Component {
     };
   }
 
+  // Get informations
   async componentDidMount() {
     try {
+      // Get the information of this project
       const proj = await this.getProj();
+      // Get all users
       const users = await this.getUsers();
       const { title, content, sta, developers, manager } = proj;
+      // Get the name of current user
       let tempUser = await Auth.currentAuthenticatedUser();
       let name = tempUser.attributes['name']
 
@@ -45,26 +52,29 @@ export default class ProjManager extends Component {
     }
   }
 
+  // Call API to get all users
   getUsers(){
     return API.get("user", "/user")
   }
 
+  // Call API to get this project
   getProj() {
     return API.get("proj", `/proj/${this.props.match.params.id}`);
   }
 
-
+  // The content should not be empty
   validateForm() {
     return this.state.content.length > 0;
   }
   
-  
+  // Handle changes in the forms  
   handleChange = event => {
     this.setState({
       [event.target.id]: event.target.value
     });
   }
 
+  // Handle submit event when clicking to save the change
   handleSubmit = async event => {  
     event.preventDefault();
   
@@ -84,18 +94,25 @@ export default class ProjManager extends Component {
     }
   }
 
+  // Save the projcet
   saveProj(proj) {
     return API.put("proj", `/proj/${this.props.match.params.id}`, {
       body: proj
     });
   }
   
-  deleteProj() {
-    return API.del("proj", `/proj/${this.props.match.params.id}`);
+  // Handle the event when selecting developers
+  handleDevSelect = event => {
+    this.setState({ developers: event});
+  }
+
+  // Handle the event when changing the status
+  handleStatusSelect = event => {
+    this.setState({ sta: event});
   }
   
-
-  generateDevList(users) {
+  // Render the buttons to show all employees for selecting developers
+  renderDevList(users) {
     return [{}].concat(users).map(
       function(user, i){
         if (i !== 0){
@@ -106,16 +123,10 @@ export default class ProjManager extends Component {
     );
   }
 
-  handleDevSelect = event => {
-    this.setState({ developers: event});
-  }
-
-  handleStatusSelect = event => {
-    this.setState({ sta: event});
-  }
-  
+  // Render the page
   render() {
     return (
+      // Check if the current login user have the right to modify the project
       this.state.name === this.state.manager
       ?
       <div className="ProjManager">
@@ -137,7 +148,7 @@ export default class ProjManager extends Component {
               value={this.state.developers}
               onChange={this.handleDevSelect}
             >
-              {this.generateDevList(this.state.users)}
+              {this.renderDevList(this.state.users)}
             </ToggleButtonGroup><br />
 
             <ControlLabel>Project Status</ControlLabel>

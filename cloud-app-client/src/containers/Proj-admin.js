@@ -1,6 +1,8 @@
+// The page of editing a project in Admin version
+
 import React, { Component } from "react";
 import { FormGroup, FormControl, Button, ControlLabel, DropdownButton, MenuItem, ToggleButtonGroup, ToggleButton, ButtonToolbar } from "react-bootstrap";
-import { API } from "aws-amplify";
+import { API, Auth } from "aws-amplify";
 import "./Proj-admin.css"
 
 export default class ProjAdmin extends Component {
@@ -17,15 +19,22 @@ export default class ProjAdmin extends Component {
         sta: "",
         developers: [],
         users: [],
+        name: "",
         dropDownTitle: ""
     };
   }
 
+  // Get informations
   async componentDidMount() {
     try {
+      // Get the information of this project
       const proj = await this.getProj();
+      // Get all users
       const users = await this.getUsers();
       const { title, content, manager, sta, developers } = proj;
+      // Get the name of current user
+      let tempUser = await Auth.currentAuthenticatedUser();
+      let name = tempUser.attributes['name']
 
       this.setState({
         proj,
@@ -34,39 +43,42 @@ export default class ProjAdmin extends Component {
         manager,
         sta,
         developers,
-        users
+        users,
+        name
       });
     } catch (e) {
       alert(e);
     }
   }
 
+  // Call API to get all users
   getUsers(){
     return API.get("user", "/user")
   }
 
+  // Call API to get this project
   getProj() {
     //console.log(this.props.match.params.id)
     return API.get("proj", `/proj/${this.props.match.params.id}`);
   }
 
-
+  // The content should not be empty
   validateForm() {
     return this.state.content.length > 0;
   }
   
-  
+  // Handle changes in the forms  
   handleChange = event => {
     this.setState({
       [event.target.id]: event.target.value
     });
   }
 
+  // Handle submit event when clicking to save the change
   handleSubmit = async event => {  
     event.preventDefault();
   
     try {
-  
       await this.saveProj({
         content: this.state.content,
         title: this.state.title,
@@ -80,16 +92,19 @@ export default class ProjAdmin extends Component {
     }
   }
 
+  // Save the project
   saveProj(proj) {
     return API.put("proj", `/proj/${this.props.match.params.id}`, {
       body: proj
     });
   }
   
+  // Delete the project
   deleteProj() {
     return API.del("proj", `/proj/${this.props.match.params.id}`);
   }
-  
+
+  // Handel the delete event
   handleDelete = async event => {
     event.preventDefault();
   
@@ -109,123 +124,130 @@ export default class ProjAdmin extends Component {
     }
   }
 
-  generateUserList(users) {
-    //return [{}].concat(users).map((user, index) => (
-    //  <MenuItem eventKey={index}>user</MenuItem>
-    //));
-
-    return [{}].concat(users).map(
-      function(user, i){
-        if (i !== 0){
-          return(<MenuItem eventKey={user.userName} key={i}>{user.userName}</MenuItem>)
-          //return(<Button key={i}>{user.name}</Button>)
-        }
-      }    
-    );
-  }
-
-  generateDevList(users) {
-    return [{}].concat(users).map(
-      function(user, i){
-        if (i !== 0){
-          return(<ToggleButton value={user.userName} key={i}>{user.userName}</ToggleButton>)
-          //return(<Button key={i}>{user.name}</Button>)
-        }
-      }    
-    );
-  }
-
+  // Handle the event when selecting manager.
   handleSelect = event => {
     this.setState({ manager: event });
   }
 
+  // Handle the event when selecting developers
   handleDevSelect = event => {
     this.setState({ developers: event});
   }
 
+  // Handle the event when changing the status
   handleStatusSelect = event => {
     this.setState({ sta: event});
   }
+
+  // Render the menu to show all employees for selecting a manager
+  renderUserList(users) {
+    return [{}].concat(users).map(
+      function(user, i){
+        if (i !== 0){
+          return(<MenuItem eventKey={user.userName} key={i}>{user.userName}</MenuItem>)
+        }
+      }    
+    );
+  }
+
+  // Render the buttons to show all employees for selecting developers
+  renderDevList(users) {
+    return [{}].concat(users).map(
+      function(user, i){
+        if (i !== 0){
+          return(<ToggleButton value={user.userName} key={i}>{user.userName}</ToggleButton>)
+        }
+      }    
+    );
+  }
   
+  // Render the page
   render() {
     return (
-      <div className="ProjAdmin">
-        {this.state.proj &&
-          <form onSubmit={this.handleSubmit}>
-            <FormGroup controlId="title">
-              <ControlLabel>Project Title</ControlLabel>
-              <FormControl
-                onChange={this.handleChange}
-                value={this.state.title}
-                type="text"
-              />
-              <FormControl.Feedback />
-            </FormGroup>
+      // Check if the current login user is Admin or not
+      this.state.name === 'Admin'
+      ?
+        <div className="ProjAdmin">
+          {this.state.proj &&
+            <form onSubmit={this.handleSubmit}>
+              <FormGroup controlId="title">
+                <ControlLabel>Project Title</ControlLabel>
+                <FormControl
+                  onChange={this.handleChange}
+                  value={this.state.title}
+                  type="text"
+                />
+                <FormControl.Feedback />
+              </FormGroup>
 
-            <ControlLabel>Project Manager</ControlLabel>
-            <DropdownButton
-              title={this.state.manager}
-              id={"dropdown-basic"}
-              onSelect={this.handleSelect}
-            >
-              <MenuItem eventKey={"None"} key={0}>None</MenuItem>
-              {this.generateUserList(this.state.users)}
-            </DropdownButton> 
-
-
-            <ControlLabel>&nbsp; Project Developers</ControlLabel>
-            <ToggleButtonGroup
-              type="checkbox"
-              value={this.state.developers}
-              onChange={this.handleDevSelect}
-            >
-              {this.generateDevList(this.state.users)}
-            </ToggleButtonGroup><br />
-
-            <ControlLabel>Project Status</ControlLabel>
-            <ButtonToolbar>
-              <ToggleButtonGroup
-                type="radio"
-                name="status"
-                onChange={this.handleStatusSelect}
-                defaultValue={this.state.sta}
+              <ControlLabel>Project Manager</ControlLabel>
+              <DropdownButton
+                title={this.state.manager}
+                id={"dropdown-basic"}
+                onSelect={this.handleSelect}
               >
-                <ToggleButton value={"Completed"}>Completed</ToggleButton>
-                <ToggleButton value={"Active"}>Active</ToggleButton>
-                <ToggleButton value={"Pending"}>Pending</ToggleButton>
-              </ToggleButtonGroup>
-            </ButtonToolbar>
+                <MenuItem eventKey={"None"} key={0}>None</MenuItem>
+                {this.renderUserList(this.state.users)}
+              </DropdownButton> 
 
 
-            <FormGroup controlId="content">
-              <ControlLabel>Project Details</ControlLabel>
-              <FormControl
-                onChange={this.handleChange}
-                value={this.state.content}
-                componentClass="textarea"
-              />
-            </FormGroup>
+              <ControlLabel>&nbsp; Project Developers</ControlLabel>
+              <ToggleButtonGroup
+                type="checkbox"
+                value={this.state.developers}
+                onChange={this.handleDevSelect}
+              >
+                {this.renderDevList(this.state.users)}
+              </ToggleButtonGroup><br />
 
-            <Button
-              block
-              bsStyle="primary"
-              bsSize="large"
-              disabled={!this.validateForm()}
-              type="submit"
-            >
-            Save
-            </Button>
-            <Button
-              block
-              bsStyle="danger"
-              bsSize="large"
-              onClick={this.handleDelete}
-            >
-            Delete
-            </Button>
-          </form>
-        }
-      </div>
+              <ControlLabel>Project Status</ControlLabel>
+              <ButtonToolbar>
+                <ToggleButtonGroup
+                  type="radio"
+                  name="status"
+                  onChange={this.handleStatusSelect}
+                  defaultValue={this.state.sta}
+                >
+                  <ToggleButton value={"Completed"}>Completed</ToggleButton>
+                  <ToggleButton value={"Active"}>Active</ToggleButton>
+                  <ToggleButton value={"Pending"}>Pending</ToggleButton>
+                </ToggleButtonGroup>
+              </ButtonToolbar>
+
+
+              <FormGroup controlId="content">
+                <ControlLabel>Project Details</ControlLabel>
+                <FormControl
+                  onChange={this.handleChange}
+                  value={this.state.content}
+                  componentClass="textarea"
+                />
+              </FormGroup>
+
+              <Button
+                block
+                bsStyle="primary"
+                bsSize="large"
+                disabled={!this.validateForm()}
+                type="submit"
+              >
+              Save
+              </Button>
+              <Button
+                block
+                bsStyle="danger"
+                bsSize="large"
+                onClick={this.handleDelete}
+              >
+              Delete
+              </Button>
+            </form>
+          }
+        </div>
+      :
+        <div className="warning">
+          <h1>You have no right to modify the project.</h1>
+        </div>
     );
   }
 }

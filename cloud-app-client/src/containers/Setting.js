@@ -1,3 +1,5 @@
+// The page of settings
+
 import React, { Component } from "react";
 import { FormGroup, FormControl, Button, PageHeader } from "react-bootstrap";
 import { API, Auth } from "aws-amplify";
@@ -7,10 +9,7 @@ export default class Setting extends Component {
   constructor(props) {
     super(props);
 
-    this.handleDevSelect = this.handleDevSelect.bind(this);
-
     this.state = {
-
         user: [],
         skills: [],
         userName: "",
@@ -18,10 +17,12 @@ export default class Setting extends Component {
     };
   }
 
+  // Get the user's information
   async componentDidMount() {
     try {
       const user = await this.getUser();
       const { userName, skills } = user
+      // Get the name of the current login user
       let tempUser = await Auth.currentAuthenticatedUser();
       const currentuser = tempUser.attributes['name']
 
@@ -36,18 +37,19 @@ export default class Setting extends Component {
     }
   }
 
+  // Get the information of the user
   getUser(){
     return API.get("user", `/user/${this.props.match.params.id}`)
   }
 
-  
-  
+  // Handle changes in the forms  
   handleChange = event => {
     this.setState({
       [event.target.id]: event.target.value
     });
   }
 
+  // Handle submit event when clicking to change the skills
   handleSubmit = async event => {  
     event.preventDefault();
   
@@ -62,24 +64,17 @@ export default class Setting extends Component {
     }
   }
 
+  // Call the API the save user information
   saveUser(user) {
-    //console.log(this.props.match.params.id)
     return API.put("user", `/user/${this.props.match.params.id}`, {
       body: user
     });
   }
-  
 
-  handleDevSelect = event => {
-    this.setState({ developers: event});
-  }
-
-  handleStatusSelect = event => {
-    this.setState({ sta: event});
-  }
-  
+  // Render the page
   render() {
     return (
+      // Check if the current user have the right to modify
       this.state.userName === this.state.currentuser
       ?
       <React.Fragment>

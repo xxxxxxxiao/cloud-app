@@ -33,8 +33,8 @@ provider:
       Resource: "arn:aws:dynamodb:eu-west-2:*:*"
 
 functions:
-  # Defines an HTTP API endpoint that calls the main function in create.js
-  # - path: url path is /notes
+  # Defines an HTTP API endpoint that calls the main function in create-proj.js
+  # - path: url path is /proj
   # - method: POST request
   # - cors: enabled CORS (Cross-Origin Resource Sharing) for browser cross
   #     domain api call
@@ -49,8 +49,8 @@ functions:
           authorizer: aws_iam
 
   get-proj:
-  # Defines an HTTP API endpoint that calls the main function in get.js
-  # - path: url path is /notes/{id}
+  # Defines an HTTP API endpoint that calls the main function in get-proj.js
+  # - path: url path is /proj/{id}
   # - method: GET request
     handler: get-proj.main
     events:
@@ -61,8 +61,8 @@ functions:
           authorizer: aws_iam
 
   list-proj:
-    # Defines an HTTP API endpoint that calls the main function in list.js
-    # - path: url path is /notes
+    # Defines an HTTP API endpoint that calls the main function in list-proj.js
+    # - path: url path is /proj
     # - method: GET request
     handler: list-proj.main
     events:
@@ -73,8 +73,8 @@ functions:
           authorizer: aws_iam
 
   update-proj:
-    # Defines an HTTP API endpoint that calls the main function in update.js
-    # - path: url path is /notes/{id}
+    # Defines an HTTP API endpoint that calls the main function in update-proj.js
+    # - path: url path is /proj/{id}
     # - method: PUT request
     handler: update-proj.main
     events:
@@ -85,8 +85,8 @@ functions:
           authorizer: aws_iam
 
   delete-proj:
-    # Defines an HTTP API endpoint that calls the main function in delete.js
-    # - path: url path is /notes/{id}
+    # Defines an HTTP API endpoint that calls the main function in delete-proj.js
+    # - path: url path is /proj/{id}
     # - method: DELETE request
     handler: delete-proj.main
     events:
@@ -97,8 +97,8 @@ functions:
           authorizer: aws_iam
 
   list-users:
-    # Defines an HTTP API endpoint that calls the main function in list.js
-    # - path: url path is /notes
+    # Defines an HTTP API endpoint that calls the main function in list-users.js
+    # - path: url path is /user
     # - method: GET request
     handler: list-users.main
     events:
@@ -109,6 +109,10 @@ functions:
           authorizer: aws_iam
 
   create-user:
+      # Defines an HTTP API endpoint that calls the main function in create-user.js
+    # - path: url path is /user
+    # - method: POST request
+    # - authorizer: authenticate using the AWS IAM role
     handler: create-user.main
     events:
       - http:
@@ -118,8 +122,8 @@ functions:
           authorizer: aws_iam
 
   get-user:
-  # Defines an HTTP API endpoint that calls the main function in get.js
-  # - path: url path is /notes/{id}
+  # Defines an HTTP API endpoint that calls the main function in get-user.js
+  # - path: url path is /user/{id}
   # - method: GET request
     handler: get-user.main
     events:
@@ -130,8 +134,8 @@ functions:
           authorizer: aws_iam
 
   update-user:
-  # Defines an HTTP API endpoint that calls the main function in update.js
-  # - path: url path is /notes/{id}
+  # Defines an HTTP API endpoint that calls the main function in update-user.js
+  # - path: url path is /user/{id}
   # - method: PUT request
     handler: update-user.main
     events:
