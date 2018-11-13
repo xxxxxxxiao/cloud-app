@@ -1,7 +1,9 @@
 // The homepage of the admin version
 
 import React, { Component } from "react";
-import { PageHeader, ListGroup, ListGroupItem, Tabs, Tab } from "react-bootstrap";
+import { PageHeader, ListGroup, ListGroupItem, Tabs, Tab, 
+         InputGroup, DropdownButton, FormControl, Button, 
+         MenuItem, FormGroup } from "react-bootstrap";
 import "./Home-admin.css";
 import { LinkContainer } from "react-router-bootstrap";
 import { API } from "aws-amplify";
@@ -13,6 +15,9 @@ export default class HomeAdmin extends Component {
     this.state = {
       projs: [],
       users: [],
+      search: "",
+      searchOption: "Employee",
+      searchResult: "",
       _isMounted: false
     };
   }
@@ -81,67 +86,58 @@ export default class HomeAdmin extends Component {
   // Render the list of all completed projects
   renderCompProjsList(projs) {
     return [{}].concat(projs).map(
-      function(proj, i) {
-        if (proj.sta === "Completed") {
-          return(
-            <LinkContainer
-              key={proj.noteID}
-              to={`/admin/${proj.noteID}`}
-            >
-              <ListGroupItem header={proj.title}>
-                {"Project Manager: " + proj.manager}<br />
-                {"Developers: " + proj.developers}<br />
-                {"Status: " + proj.sta}
-              </ListGroupItem>
-            </LinkContainer>
-          )
-        }
-      }
+      (proj, i) =>
+        proj.sta === "Completed" ?      
+          <LinkContainer
+            key={proj.noteID}
+            to={`/admin/${proj.noteID}`}
+          >
+            <ListGroupItem header={proj.title}>
+              {"Project Manager: " + proj.manager}<br />
+              {"Developers: " + proj.developers}<br />
+              {"Status: " + proj.sta}
+            </ListGroupItem>
+          </LinkContainer>
+        : <div key={i}></div>
     )
   }
 
   // Render the list of all active projects
   renderActiveProjsList(projs) {
     return [{}].concat(projs).map(
-      function(proj, i) {
-        if (proj.sta === "Active") {
-          return(
-            <LinkContainer
-              key={proj.noteID}
-              to={`/admin/${proj.noteID}`}
-            >
-              <ListGroupItem header={proj.title}>
-                {"Project Manager: " + proj.manager}<br />
-                {"Developers: " + proj.developers}<br />
-                {"Status: " + proj.sta}
-              </ListGroupItem>
-            </LinkContainer>
-          )
-        }
-      }
+      (proj, i) =>
+        proj.sta === "Active" ?
+          <LinkContainer
+            key={proj.noteID}
+            to={`/admin/${proj.noteID}`}
+          >
+            <ListGroupItem header={proj.title}>
+              {"Project Manager: " + proj.manager}<br />
+              {"Developers: " + proj.developers}<br />
+              {"Status: " + proj.sta}
+            </ListGroupItem>
+          </LinkContainer>
+        : <div key={i}></div> 
     )
   }
 
   // Render the list of all pending projects
   renderPendingProjsList(projs) {
     return [{}].concat(projs).map(
-      function(proj, i) {
-        if (proj.sta === "Pending") {
-          return(
-            <LinkContainer
-              key={proj.noteID}
-              to={`/admin/${proj.noteID}`}
-            >
-              <ListGroupItem header={proj.title}>
-                {"Project Manager: " + proj.manager}<br />
-                {"Developers: " + proj.developers}<br />
-                {"Status: " + proj.sta}
-              </ListGroupItem>
-            </LinkContainer>
-          )
-        }
-      }
-    )
+      (proj, i) =>
+        proj.sta === "Pending" ?
+          <LinkContainer
+            key={proj.noteID}
+            to={`/admin/${proj.noteID}`}
+          >
+            <ListGroupItem header={proj.title}>
+              {"Project Manager: " + proj.manager}<br />
+              {"Developers: " + proj.developers}<br />
+              {"Status: " + proj.sta}
+            </ListGroupItem>
+          </LinkContainer>
+        : <div key={i}></div>    
+    );
   }
   
   // Render the list of all users
@@ -209,6 +205,106 @@ export default class HomeAdmin extends Component {
     )
   }
 
+  // Handle change in the form when doing search
+  handleChange = async event => {
+    this.setState({
+      [event.target.id]: event.target.value
+    });
+  }
+
+  // Handle selection event when selecting to search by employee or project
+  handleSelectSearch = event => {
+    this.setState({ searchOption: event });
+    this.setState({ searchResult: "" });
+  }
+
+  // Handle click event when clicking to search
+  handelClick = async event => {
+    event.preventDefault();
+
+    let temp = this.state.search.toLocaleLowerCase();
+    var result = [];
+    // Check that if want to search by employee or project
+    this.state.searchOption === "Employee" ?
+      this.state.users.forEach(function(user){
+        if (user.userName.toLocaleLowerCase().indexOf(temp) !== -1){
+          result.push(user);
+        }
+      })
+    : this.state.projs.forEach(function(proj) {
+        if (proj.title.toLocaleLowerCase().indexOf(temp) !== -1) {
+          result.push(proj);
+        }
+      });
+    
+    this.setState({
+      searchResult: result
+    })
+  }
+
+  // Render the search form and button
+  renderSearch(){
+    return (
+      <div className="search">
+        <br /><br />
+          <FormGroup controlId="search">
+            <InputGroup>
+              <DropdownButton
+                componentClass={InputGroup.Button}
+                id="input-dropdown"
+                title={this.state.searchOption}
+                onSelect={this.handleSelectSearch}
+              >
+                <MenuItem eventKey={"Employee"}>Employee</MenuItem>
+                <MenuItem eventKey={"Project"}>Project</MenuItem>
+              </DropdownButton>
+              <FormControl
+                value={this.state.search}
+                type="text"
+                onChange={this.handleChange}
+              />
+            </InputGroup>
+          </FormGroup>
+          <Button
+            block
+            bsStyle="primary"
+            bsSize="large"
+            onClick={this.handelClick}
+          >
+          Search
+          </Button>
+      </div>
+    )
+  }
+
+  // Render the search result
+  renderResult() {
+    return (
+      this.state.searchResult ?
+        (this.state.searchOption === "Employee" 
+          ? this.state.searchResult.map(user =>
+            <ListGroupItem header={user.userName} key={user.userID}>
+              {"Skills: " + user.skills}
+            </ListGroupItem>)
+          : this.state.searchResult.map(proj =>
+            <LinkContainer
+            key={proj.noteID}
+            to={`/admin/${proj.noteID}`}
+            >
+              <ListGroupItem header={proj.title}>
+                {"Project Manager: " + proj.manager}<br />
+                {"Developers: " + proj.developers}<br />
+                {"Status: " + proj.sta}
+              </ListGroupItem>
+            </LinkContainer>)
+        ) 
+      :
+      <div className="None">
+      </div>
+    
+    )
+  }
+
   // Render tabs to switch between users and projects
   renderTabs() {
     return (
@@ -218,6 +314,12 @@ export default class HomeAdmin extends Component {
         </Tab>
         <Tab eventKey={2} title="Users">
           {this.renderUsers()}
+        </Tab>
+        <Tab eventKey={3} title="Search">
+          {this.renderSearch()}
+          <ListGroup><br /><br />
+          {this.renderResult()}
+          </ListGroup>
         </Tab>
       </Tabs>
     );

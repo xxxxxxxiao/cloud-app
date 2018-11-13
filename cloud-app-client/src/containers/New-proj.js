@@ -88,22 +88,20 @@ export default class NewProj extends Component {
   // Render the menu to show all employees for selecting a manager
   renderUserList(users) {
     return [{}].concat(users).map(
-      function(user, i){
-        if (i !== 0){
-          return(<MenuItem eventKey={user.userName} key={i}>{user.userName}</MenuItem>)
-        }
-      }    
+      (user, i) =>
+        i !== 0 ?
+          <MenuItem eventKey={user.userName} key={i}>{user.userName}</MenuItem>
+        : <div key={i}></div>   
     );
   }
 
   // Render the buttons to show all employees for selecting developers
   renderDevList(users) {
     return [{}].concat(users).map(
-      function(user, i){
-        if (i !== 0){
-          return(<ToggleButton value={user.userName} key={i}>{user.userName}</ToggleButton>)
-        }
-      }    
+      (user, i) =>
+        i !== 0 ?
+          <ToggleButton value={user.userName} key={i}>{user.userName}</ToggleButton>
+        : <div key={i}></div>
     );
   }
 
@@ -121,7 +119,7 @@ export default class NewProj extends Component {
               type="text"
             />
             <FormControl.Feedback />
-          </FormGroup>
+          </FormGroup><br />
 
           <ControlLabel>Project Manager</ControlLabel>
           <DropdownButton
@@ -131,15 +129,15 @@ export default class NewProj extends Component {
           >
             <MenuItem eventKey={"None"} key={0}>None</MenuItem>
             {this.renderUserList(this.state.users)}
-          </DropdownButton>
+          </DropdownButton><br /><br />
 
-          <ControlLabel>&nbsp; Project Developers</ControlLabel>
+          <ControlLabel>Project Developers</ControlLabel><br />
           <ToggleButtonGroup
             type="checkbox"
             onChange={this.handleDevSelect}
           >
             {this.renderDevList(this.state.users)}
-          </ToggleButtonGroup>
+          </ToggleButtonGroup><br /><br />
 
           <FormGroup controlId="content">
             <ControlLabel>Project Details</ControlLabel>
@@ -148,7 +146,7 @@ export default class NewProj extends Component {
               value={this.state.content}
               componentClass="textarea"
             />
-          </FormGroup>
+          </FormGroup><br />
 
           <Button
             block

@@ -17,3 +17,9 @@
 .HomeAdmin .tab p {
   color: #666;
 }
+
+.HomeAdmin button {
+  max-width: 600px;
+  margin: 0 auto;
+  
+}

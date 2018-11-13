@@ -114,6 +114,7 @@ export default class AddEmpl extends Component {
           bsSize="large"
           disabled={!this.validateForm()}
           type="submit"
+          bsStyle="success"
           block
         >
         Add New Employee

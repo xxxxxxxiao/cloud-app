@@ -20,6 +20,7 @@ export default class ProjAdmin extends Component {
         developers: [],
         users: [],
         name: "",
+        admin: "Admin",
         dropDownTitle: ""
     };
   }
@@ -142,31 +143,30 @@ export default class ProjAdmin extends Component {
   // Render the menu to show all employees for selecting a manager
   renderUserList(users) {
     return [{}].concat(users).map(
-      function(user, i){
-        if (i !== 0){
-          return(<MenuItem eventKey={user.userName} key={i}>{user.userName}</MenuItem>)
-        }
-      }    
+      (user, i) =>
+        i !== 0 ?
+          <MenuItem eventKey={user.userName} key={i}>{user.userName}</MenuItem>
+        : <div key={i}></div>  
+         
     );
   }
 
   // Render the buttons to show all employees for selecting developers
   renderDevList(users) {
     return [{}].concat(users).map(
-      function(user, i){
-        if (i !== 0){
-          return(<ToggleButton value={user.userName} key={i}>{user.userName}</ToggleButton>)
-        }
-      }    
+      (user, i) =>
+        i !== 0 ?
+          <ToggleButton value={user.userName} key={i}>{user.userName}</ToggleButton>
+        : <div key={i}></div>  
+      
     );
   }
   
   // Render the page
   render() {
-    return (
+    return ( 
       // Check if the current login user is Admin or not
-      this.state.name === 'Admin'
-      ?
+      this.props.isAdmin ?
         <div className="ProjAdmin">
           {this.state.proj &&
             <form onSubmit={this.handleSubmit}>
@@ -178,7 +178,7 @@ export default class ProjAdmin extends Component {
                   type="text"
                 />
                 <FormControl.Feedback />
-              </FormGroup>
+              </FormGroup><br />
 
               <ControlLabel>Project Manager</ControlLabel>
               <DropdownButton
@@ -188,17 +188,17 @@ export default class ProjAdmin extends Component {
               >
                 <MenuItem eventKey={"None"} key={0}>None</MenuItem>
                 {this.renderUserList(this.state.users)}
-              </DropdownButton> 
+              </DropdownButton> <br /><br />
 
 
-              <ControlLabel>&nbsp; Project Developers</ControlLabel>
+              <ControlLabel>Project Developers</ControlLabel><br />
               <ToggleButtonGroup
                 type="checkbox"
                 value={this.state.developers}
                 onChange={this.handleDevSelect}
               >
                 {this.renderDevList(this.state.users)}
-              </ToggleButtonGroup><br />
+              </ToggleButtonGroup><br /><br />
 
               <ControlLabel>Project Status</ControlLabel>
               <ButtonToolbar>
@@ -212,7 +212,7 @@ export default class ProjAdmin extends Component {
                   <ToggleButton value={"Active"}>Active</ToggleButton>
                   <ToggleButton value={"Pending"}>Pending</ToggleButton>
                 </ToggleButtonGroup>
-              </ButtonToolbar>
+              </ButtonToolbar><br />
 
 
               <FormGroup controlId="content">
@@ -222,7 +222,7 @@ export default class ProjAdmin extends Component {
                   value={this.state.content}
                   componentClass="textarea"
                 />
-              </FormGroup>
+              </FormGroup><br />
 
               <Button
                 block

@@ -1,5 +1,6 @@
 .NewProj form {
     padding-bottom: 15px;
+    font-size: 24px;
 }
 
 .NewProj form textarea {
@@ -10,4 +11,10 @@
 .NewProj form textarea {
     height: 300px;
     font-size: 24px;
+}
+
+.NewProj button {
+    max-width: 600px;
+    margin: 0 auto;
+    
 }

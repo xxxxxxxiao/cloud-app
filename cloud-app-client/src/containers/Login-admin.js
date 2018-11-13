@@ -44,7 +44,9 @@ export default class LoginAdmin extends Component {
         this.props.history.push("/admin");
       }
       else{
-        alert("Sorry, you can not access as Admin.")
+        alert("Sorry, you can not access as Admin.");
+        this.props.userHasAuthenticated(false);
+        this.props.history.push("/");
       }
     } catch (e) {
       alert(e.message);
@@ -76,6 +78,7 @@ export default class LoginAdmin extends Component {
           <Button
             block
             bsSize="large"
+            bsStyle="success"
             disabled={!this.validateForm()}
             type="submit"
           >

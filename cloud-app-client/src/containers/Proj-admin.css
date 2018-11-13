@@ -12,3 +12,9 @@
     height: 300px;
     font-size: 24px;
 }
+
+.ProjAdmin button {
+    max-width: 600px;
+    margin: 0 auto;
+    
+  }

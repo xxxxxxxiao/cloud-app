@@ -1,7 +1,7 @@
 // The homepage of employee version
 
 import React, { Component } from "react";
-import { PageHeader, ListGroup, ListGroupItem, Tabs, Tab } from "react-bootstrap";
+import { PageHeader, ListGroup, ListGroupItem, Tabs, Tab, Button } from "react-bootstrap";
 import "./Home-empl.css";
 import { LinkContainer } from "react-router-bootstrap";
 import { API, Auth } from "aws-amplify";
@@ -64,24 +64,19 @@ export default class HomeEmpl extends Component {
   renderManagedProjsList(projs) {
     let username = this.state.name;
     return [{}].concat(projs).map(
-      function(proj, i){
-        if (i !== 0){
-          if (proj.manager === username){
-            return(
-              <LinkContainer
-                key={proj.noteID}
-                to={`/manager/${proj.noteID}`}
-              >
-                <ListGroupItem header={proj.title} >
-                  {"Project Manager: " + proj.manager}<br />
-                  {"Developers: " + proj.developers}<br />
-                  {"Status: " + proj.sta}
-                </ListGroupItem>
-              </LinkContainer>
-            )
-          }
-        }
-      }     
+      (proj, i) =>
+        i !== 0 && proj.manager === username ?  
+          <LinkContainer
+            key={proj.noteID}
+            to={`/manager/${proj.noteID}`}
+          >
+            <ListGroupItem header={proj.title} >
+              {"Project Manager: " + proj.manager}<br />
+              {"Developers: " + proj.developers}<br />
+              {"Status: " + proj.sta}
+            </ListGroupItem>
+          </LinkContainer>
+        : <div key={i}></div>       
     );
   }
 
@@ -89,23 +84,20 @@ export default class HomeEmpl extends Component {
   renderInvolvedProjsList(projs) {
     let username = this.state.name;
     return [{}].concat(projs).map(
-      function(proj, i){
-        if (proj.developers && proj.developers.indexOf(username) !== -1 
-            && proj.manager && proj.manager!== username) {
-              return(
-                <LinkContainer
-                key={proj.noteID}
-                to={`/empl/${proj.noteID}`}
-              >
-                <ListGroupItem header={proj.title} key={proj.noteID}>
-                  {"Project Manager: " + proj.manager}<br />
-                  {"Developers: " + proj.developers}<br />
-                  {"Status: " + proj.sta}
-                </ListGroupItem>  
-                </LinkContainer>
-              )          
-        }
-      }
+      (proj, i) =>
+        proj.developers && proj.developers.indexOf(username) !== -1 
+        && proj.manager && proj.manager!== username ?  
+          <LinkContainer
+            key={proj.noteID}
+            to={`/empl/${proj.noteID}`}
+          >
+            <ListGroupItem header={proj.title} key={proj.noteID}>
+              {"Project Manager: " + proj.manager}<br />
+              {"Developers: " + proj.developers}<br />
+              {"Status: " + proj.sta}
+            </ListGroupItem>  
+          </LinkContainer>
+        : <div key={i}></div>    
     );
   }
 
@@ -113,19 +105,15 @@ export default class HomeEmpl extends Component {
   renderOtherProjsList(projs) {
     let username = this.state.name;
     return [{}].concat(projs).map(
-      function(proj, i){
-        if (i !== 0){
-          if (proj.manager !== username && proj.developers && proj.developers.indexOf(username) === -1){
-            return(
-              <ListGroupItem header={proj.title} key={proj.noteID}>
-                {"Project Manager: " + proj.manager}<br />
-                {"Developers: " + proj.developers}<br />
-                {"Status: " + proj.sta}
-              </ListGroupItem>  
-            )
-          }  
-        }
-      }
+      (proj, i) => 
+        i !== 0 && proj.manager !== username && proj.developers 
+        && proj.developers.indexOf(username) === -1 ?
+          <ListGroupItem header={proj.title} key={proj.noteID}>
+            {"Project Manager: " + proj.manager}<br />
+            {"Developers: " + proj.developers}<br />
+            {"Status: " + proj.sta}
+          </ListGroupItem>  
+        : <div key={i}></div>    
     );
   }
 
@@ -133,17 +121,12 @@ export default class HomeEmpl extends Component {
   renderUsersList(users) {
     let username = this.state.name;
     return [{}].concat(users).map(
-      function(user, i){
-          if (i !== 0){
-            if (user.userName !== username){
-                return(
-                    <ListGroupItem header={user.userName} key={user.userID}>
-                        {"Skills: " + user.skills}
-                    </ListGroupItem>
-                )
-            }
-          }
-      }
+      (user, i) =>
+        i !== 0 && user.userName !== username ?      
+          <ListGroupItem header={user.userName} key={user.userID}>
+              {"Skills: " + user.skills}
+          </ListGroupItem>
+        : <div key={i}></div>   
     );
   }
 
@@ -183,11 +166,12 @@ export default class HomeEmpl extends Component {
               key={"setting"}
               to={`/empl/setting/${this.state.userID}`}
           >
-            <ListGroupItem active>
-                <h4>
-                <b></b> Settings
-                </h4>
-            </ListGroupItem>
+            <Button
+                block
+                bsStyle="primary"
+                bsSize="large">
+                Setting
+            </Button>
           </LinkContainer>
       </div>
       <div className='otherusers'>

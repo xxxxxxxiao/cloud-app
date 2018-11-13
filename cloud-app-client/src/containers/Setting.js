@@ -2,6 +2,7 @@
 
 import React, { Component } from "react";
 import { FormGroup, FormControl, Button, PageHeader } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
 import { API, Auth } from "aws-amplify";
 import "./Setting.css"
 
@@ -80,14 +81,18 @@ export default class Setting extends Component {
       <React.Fragment>
         <div className="Password">
         <PageHeader>Password</PageHeader>
+        <LinkContainer
+              key={"setting"}
+              to={`/empl/setting/${this.props.match.params.id}/password`}
+        >
           <Button
             block
             bsStyle="danger"
             bsSize="large"
-            href={`/empl/setting/${this.props.match.params.id}/password`}
           >
           Change Password
           </Button>
+        </LinkContainer>
         
         </div>
         <div className="Setting">

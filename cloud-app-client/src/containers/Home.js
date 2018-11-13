@@ -14,7 +14,7 @@ export default class Home extends Component {
         <LinkContainer to="/adminlogin">
         <Button
             bsSize="large"
-            bsStyle="success"
+            bsStyle="primary"
             type="submit"
             block
           >
@@ -25,7 +25,7 @@ export default class Home extends Component {
         <LinkContainer to="/empllogin">
         <Button
             bsSize="large"
-            bsStyle="success"
+            bsStyle="primary"
             type="submit"
             block
           >

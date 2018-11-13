@@ -113,13 +113,10 @@ export default class ProjManager extends Component {
   
   // Render the buttons to show all employees for selecting developers
   renderDevList(users) {
-    return [{}].concat(users).map(
-      function(user, i){
-        if (i !== 0){
-          return(<ToggleButton value={user.userName} key={i}>{user.userName}</ToggleButton>)
-          //return(<Button key={i}>{user.name}</Button>)
-        }
-      }    
+    return [{}].concat(users).map((user, i) =>
+          i !== 0 ?
+            <ToggleButton value={user.userName} key={i}>{user.userName}</ToggleButton>
+          : <div key={i}></div>  
     );
   }
 
@@ -140,16 +137,16 @@ export default class ProjManager extends Component {
                 type="text"
               />
               <FormControl.Feedback />
-            </FormGroup>
+            </FormGroup><br />
 
-            <ControlLabel>Project Developers</ControlLabel>
+            <ControlLabel>Project Developers</ControlLabel><br />
             <ToggleButtonGroup
               type="checkbox"
               value={this.state.developers}
               onChange={this.handleDevSelect}
             >
               {this.renderDevList(this.state.users)}
-            </ToggleButtonGroup><br />
+            </ToggleButtonGroup><br /><br />
 
             <ControlLabel>Project Status</ControlLabel>
             <ButtonToolbar>
@@ -163,7 +160,7 @@ export default class ProjManager extends Component {
                 <ToggleButton value={"Active"}>Active</ToggleButton>
                 <ToggleButton value={"Pending"}>Pending</ToggleButton>
               </ToggleButtonGroup>
-            </ButtonToolbar>
+            </ButtonToolbar><br />
 
 
             <FormGroup controlId="content">
@@ -173,7 +170,7 @@ export default class ProjManager extends Component {
                 value={this.state.content}
                 componentClass="textarea"
               />
-            </FormGroup>
+            </FormGroup><br />
 
             <Button
               block

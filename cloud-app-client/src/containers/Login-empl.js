@@ -44,7 +44,9 @@ export default class LoginEmpl extends Component {
         this.props.history.push("/empl");
       }
       else{
-        alert("Please login as Admin.")
+        alert("Please login as Admin.");
+        this.props.userHasAuthenticated(false);
+        this.props.history.push("/");
       }
     } catch (e) {
       alert(e.message);
@@ -76,6 +78,7 @@ export default class LoginEmpl extends Component {
           <Button
             block
             bsSize="large"
+            bsStyle="success"
             disabled={!this.validateForm()}
             type="submit"
           >
