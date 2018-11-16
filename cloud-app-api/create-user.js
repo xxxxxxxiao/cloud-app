@@ -13,6 +13,7 @@ export async function main(event, context, callback) {
     Item: {
       userID: uuid.v1(),
       userName: data.userName,
+      email: data.email,
       skills: data.skills
     }
   };

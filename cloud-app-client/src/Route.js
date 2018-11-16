@@ -13,6 +13,7 @@ import ProjDeveloper from "./containers/Proj-dev"
 import Setting from "./containers/Setting"
 import Password from "./containers/Password"
 import NotFound from "./containers/NotFound"
+import SendEmail from "./containers/Send-email"
 
 import AppliedRoute from "./components/AppliedRoute";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
@@ -34,6 +35,8 @@ export default ({ childProps }) =>
     <AuthenticatedRoute path="/empl/:id" exact component={ProjDeveloper} props={childProps} />
     <AuthenticatedRoute path="/empl/setting/:id" exact component={Setting} props={childProps} />
     <AuthenticatedRoute path="/empl/setting/:id/password" exact component={Password} props={childProps} />
+    <AuthenticatedRoute path="/admin/email/:id" exact component={SendEmail} props={childProps} />
+
 
     <AppliedRoute component={NotFound} />
 

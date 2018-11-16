@@ -108,6 +108,7 @@ export default class NewProj extends Component {
   // Render the page
   render() {
     return (
+      this.props.isAdmin ?
       <div className="NewProj">
         <form onSubmit={this.handleSubmit}>
           <FormGroup controlId="title">
@@ -158,6 +159,10 @@ export default class NewProj extends Component {
           Create
           </Button>
         </form>
+      </div>
+      : 
+      <div className="warning">
+          <h1>You have no right to add new project.</h1>
       </div>
     );
   }

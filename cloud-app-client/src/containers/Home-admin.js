@@ -27,8 +27,7 @@ export default class HomeAdmin extends Component {
       return;
     }
     this._isMounted = true
-    // Set the isAdmin to be true, this is used for the UnauthenticatedRoute.js
-    this.props.userIsAdmin(true);
+
     try {
       const projs = await this.getProjs();
       const users = await this.getUsers();
@@ -145,10 +144,15 @@ export default class HomeAdmin extends Component {
     return [{}].concat(users).map(
       (user, i) =>
         i !== 0
-         ?  <ListGroupItem header={user.userName} key={user.userID}>
-              {"Skills: " + user.skills}
-            </ListGroupItem>
-            
+         ?  
+            <LinkContainer
+              key = {user.userID}
+              to= {`/admin/email/${user.userID}`}
+            >
+              <ListGroupItem header={user.userName} key={user.userID}>
+                {"Skills: " + user.skills}
+              </ListGroupItem>
+            </LinkContainer>
           : <LinkContainer
               key="newuser"
               to="/newuser"
@@ -283,9 +287,14 @@ export default class HomeAdmin extends Component {
       this.state.searchResult ?
         (this.state.searchOption === "Employee" 
           ? this.state.searchResult.map(user =>
-            <ListGroupItem header={user.userName} key={user.userID}>
-              {"Skills: " + user.skills}
-            </ListGroupItem>)
+            <LinkContainer
+              key = {user.userID}
+              to= {`/admin/email/${user.userID}`}
+            >
+              <ListGroupItem header={user.userName} key={user.userID}>
+                {"Skills: " + user.skills}
+              </ListGroupItem>
+            </LinkContainer>)
           : this.state.searchResult.map(proj =>
             <LinkContainer
             key={proj.noteID}
@@ -327,9 +336,14 @@ export default class HomeAdmin extends Component {
 
   render() {
     return (
-      <div className="HomeAdmin">
-        {this.renderTabs()} 
-      </div>
+      this.props.isAdmin ?
+        <div className="HomeAdmin">
+          {this.renderTabs()} 
+        </div>
+      :
+        <div className="warning">
+          <h1>You have no right to enter as Admin.</h1>
+        </div>
     );
   }
 }

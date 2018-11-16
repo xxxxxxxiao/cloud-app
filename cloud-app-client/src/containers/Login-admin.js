@@ -33,19 +33,22 @@ export default class LoginAdmin extends Component {
   
     try {
       // Set the isAdmin to be true, this is used for the UnauthenticatedRoute
-      this.props.userIsAdmin(true);
+      this.props.userIsAdmin(true)
       // Use Auth.signIn from aws-amplify to sign in
       await Auth.signIn(this.state.email, this.state.password);
       this.props.userHasAuthenticated(true);
       // Check the role of the user, if not 'admin', then the user cannot login as admin
       let tempUser = await Auth.currentAuthenticatedUser();
+
       if (tempUser.attributes['custom:role'] === 'admin')    
       {
+        console.log(this.props.isAdmin) 
         this.props.history.push("/admin");
       }
       else{
         alert("Sorry, you can not access as Admin.");
         this.props.userHasAuthenticated(false);
+        this.props.userIsAdmin(false)
         this.props.history.push("/");
       }
     } catch (e) {

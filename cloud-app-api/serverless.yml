@@ -32,6 +32,15 @@ provider:
         - dynamodb:DeleteItem
       Resource: "arn:aws:dynamodb:eu-west-2:*:*"
 
+    - Effect: Allow
+      Action:
+          - logs:CreateLogGroup
+          - logs:CreateLogStream
+          - logs:PutLogEvents
+          - ses:SendEmail
+          - ses:SendRawEmail
+      Resource: "*"
+
 functions:
   # Defines an HTTP API endpoint that calls the main function in create-proj.js
   # - path: url path is /proj
@@ -144,3 +153,14 @@ functions:
           method: put
           cors: true
           authorizer: aws_iam
+
+  send-email:
+    handler: send-email.main
+    events:
+      - http:
+          path: emailto
+          method: post
+          cors: true
+          authorizer: aws_iam
+
+  

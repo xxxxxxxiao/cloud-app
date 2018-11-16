@@ -54,6 +54,7 @@ export default class AddEmpl extends Component {
       // Add the name of the new user to the table in DynamoDb
       await this.createUser({
         userName: this.state.name,
+        email: this.state.email
       })
 
       this.setState({

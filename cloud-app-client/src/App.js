@@ -27,6 +27,11 @@ class App extends Component {
     try {
       await Auth.currentSession();
       this.userHasAuthenticated(true);
+      // Check if the user is Admin
+      let tempUser = await Auth.currentAuthenticatedUser();
+      if (tempUser.attributes['custom:role'] === 'admin'){
+        this.userIsAdmin(true);
+      }
     }
     catch(e) {
       if (e !== 'No current user') {

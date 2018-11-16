@@ -32,8 +32,6 @@ export default class LoginEmpl extends Component {
     event.preventDefault();
   
     try {
-      // Set the isAdmin to be false, this is used for the UnauthenticatedRoute
-      this.props.userIsAdmin(false);
       // Use Auth.signIn from aws-amplify to sign in
       await Auth.signIn(this.state.email, this.state.password);
       this.props.userHasAuthenticated(true);
